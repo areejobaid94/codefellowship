@@ -8,11 +8,16 @@
 
 </head>
 <style>
-    body {
+   body {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
 }
-
+.column_post {
+  float: left;
+  margin-left: 4%;
+  padding: 20px 20px;
+  box-shadow: 4px 3px 4px 3px #888888;
+}
 .topnav {
   overflow: hidden;
   background-color: #333;
@@ -49,6 +54,13 @@
     display: block;
   }
 }
+.row, .formB{
+display: inline-block;
+}
+
+#contanar{
+display:flex;
+}
 
 @media screen and (max-width: 600px) {
   .topnav.responsive {position: relative;}
@@ -67,17 +79,18 @@
 <body>
 <div class="topnav" id="myTopnav">
     <a href="/" class="active">Home</a>
-    <a href="/myprofile" id="profile" style="display:none;">My Profile</a>
-    <a href="/signup" id ="signup">Sign Up</a>
-    <a href="/login" id = "login">Login</a>
-    <a href="/posts">All posts</a>
-    <a  href= "/myprofile"><span id = "username" th:text="${username}" style="display:none;"></span></a>
+    <a th:if="${username}" href="/myprofile" >My Profile</a>
+    <a href="/signup" th:if="!${username}" >Sign Up</a>
+    <a href="/login" th:if="!${username}">Login</a>
+    <a href="/posts"  th:if="${username}"> All posts</a>
+    <a href="/user_Data" >Search By Id</a>
+    <a  href= "/myprofile"><span th:if="${username}" th:text="${username}"></span></a>
+
     <a href="javascript:void(0);" class="icon" onclick="myFunction()">
         <i class="fa fa-bars"></i>
     </a>
-    <a href="/perform_logout" id = "logout" style="display:none;">Log Out</a>
+    <a href="/perform_logout" th:if="${username}" >Log Out</a>
 </div>
-
 <form action="/post" class="formB"  method="post">
     <h3>Add Post</h3>
     <label>
@@ -92,20 +105,22 @@
     <br>
     <input type="submit" value="Submit" class="button"/>
 </form>
+</div>
+
 <h2 class="headers">All Posts</h2>
 <div class="row" >
-    <div class="column" th:each = "post : ${posts}" >
+    <div class="column_post" th:each = "post : ${posts}" >
         <div class="card">
-            <form style="width= 100%" action="/post-update" id="update" hidden  method="post">
-                <h3>Update Post</h3>
+            <form  th:if="${post.applicationUser.username} == ${username}" style="width= 100%" action="/post-update?_method=put" class="update_del" hidden  method="post">
+                <h3  th:if="${post.applicationUser.username} == ${username}">Update Post</h3>
                 <label>
                     Post Body:
-                    <input type="text" th:name="body" th:value="${post.body}">
+                    <input type="text" th:name="body" th:value="${post.body}" required>
                 </label>
                 <br>
                 <label>
                     Image Url:
-                    <input type="text" th:name="imageUrl" th:value="${post.imageUrl}">
+                    <input type="text" th:name="imageUrl" th:value="${post.imageUrl}" required>
                 </label>
                 <br>
                 <input th:value="${post.id}" type="text" th:name="id" hidden/>
@@ -114,18 +129,18 @@
                 </p>
             </form>
 
-            <div hidden id = "back">
+            <div hidden class="back_del">
                 <input type="submit" value="Back to data"  onclick="toggle()" class="button" />
             </div>
-            <div id="card">
+            <div class="card_del">
 
                 <img th:src="${post.imageUrl}"  style="width:100%" class="img"/>
                 <h4>Post Body: </h4><p th:text="${post.body}"></p>
-                <form action="/delete_post"  method="get">
+                <form th:if="${post.applicationUser.username} == ${username}" action="/delete_post?_method=delete"  method="post">
                     <input th:value="${post.id}" type="text" th:name="id" hidden/>
                     <input type="submit" value="Delete" class="button"/>
                 </form>
-                <input type="submit" value="Update Post" onclick="toggle()" class="button"/>
+                <input  th:if="${post.applicationUser.username} == ${username}" type="submit" value="Update Post" onclick="toggle()" class="button"/>
             </div>
         </div>
     </div>
@@ -135,12 +150,16 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
 function toggle(){
-$("#update").toggle();
-$("#card").toggle();
-$("#back").toggle();
+$(".update_del").toggle();
+$(".card_del").toggle();
+$(".back_del").toggle();
 }
-
-
+function toggleUser(){
+console.log("hiiiiiiii")
+$(".update-user").toggle();
+$(".card-user").toggle();
+$(".back-user").toggle();
+}
 function myFunction() {
   var x = document.getElementById("myTopnav");
   if (x.className === "topnav") {
@@ -149,13 +168,7 @@ function myFunction() {
     x.className = "topnav";
   }
 }
-if($("#username").text()){
-$("#username").toggle();
-$("#logout").toggle();
-$("#login").toggle();
-$("#signup").toggle();
-$("#profile").toggle();
-}
+
 </script>
 </script>
 </body>

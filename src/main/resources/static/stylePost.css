@@ -138,7 +138,6 @@ body {
 /* Float four columns side by side */
 .column {
   float: left;
-  width: 28%;
   margin-left: 4%;
   padding: 20px 20px;
   box-shadow: 4px 3px 4px 3px #888888;
@@ -156,7 +155,9 @@ body {
   display: table;
   clear: both;
 }
-
+.row{
+margin:auto;
+}
 .headers{
 margin-top:70px;
 margin-bottom:20px;

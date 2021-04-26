@@ -9,6 +9,67 @@
     <title>Document</title>
 </head>
 <style>
+body {font-family: Arial, Helvetica, sans-serif;}
+form {border: 3px solid #f1f1f1;}
+
+input[type=text], input[type=password] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+.cancelbtn {
+  width: auto;
+  padding: 10px 18px;
+  background-color: #f44336;
+}
+
+.imgcontainer {
+  text-align: center;
+  margin: 24px 0 12px 0;
+}
+
+img.avatar {
+  width: 40%;
+  border-radius: 50%;
+}
+
+.container {
+  padding: 16px;
+}
+
+span.psw {
+  float: right;
+  padding-top: 16px;
+}
+
+/* Change styles for span and cancel button on extra small screens */
+@media screen and (max-width: 300px) {
+  span.psw {
+     display: block;
+     float: none;
+  }
+  .cancelbtn {
+     width: 100%;
+  }
+}
     body {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
@@ -65,35 +126,37 @@
   }
 }
 </style>
-<body>
 <div class="topnav" id="myTopnav">
     <a href="/" class="active">Home</a>
-    <a href="/myprofile" id="profile" style="display:none;">My Profile</a>
-    <a href="/signup" id ="signup">Sign Up</a>
-    <a href="/login" id = "login">Login</a>
-    <a href="/posts">All posts</a>
-    <a  href= "/myprofile"><span id = "username" th:text="${username}" style="display:none;"></span></a>
+    <a th:if="${username}" href="/myprofile" >My Profile</a>
+    <a href="/signup" th:if="!${username}" >Sign Up</a>
+    <a href="/login" th:if="!${username}">Login</a>
+    <a href="/posts"  th:if="${username}"> All posts</a>
+    <a href="/user_Data" >Search By Id</a>
+    <a  href= "/myprofile"><span th:if="${username}" th:text="${username}"></span></a>
+
     <a href="javascript:void(0);" class="icon" onclick="myFunction()">
         <i class="fa fa-bars"></i>
     </a>
-    <a href="/perform_logout" id = "logout" style="display:none;">Log Out</a>
+    <a href="/perform_logout" th:if="${username}" >Log Out</a>
 </div>
 
-<form action="perform_login" method='POST'>
-    <table>
-        <tr>
-            <td>User:</td>
-            <td><input type='text' name='username' value=''></td>
-        </tr>
-        <tr>
-            <td>Password:</td>
-            <td><input type='password' name='password' /></td>
-        </tr>
-        <tr>
-            <td><input name="submit" type="submit" value="submit" /></td>
-        </tr>
-    </table>
+<form method="POST" action="/perform_login">
+    <div class="imgcontainer">
+    </div>
+    <div class="container">
+        <label for="username1"><b>Username</b></label>
+        <input type="text" id = "username1" placeholder="Enter Username" name="username" required>
+
+        <label for="password"><b>Password</b></label>
+        <input type="password" id="password" placeholder="Enter Password" name="password" required>
+    </div>
+    <div class="container" style="background-color:#f1f1f1">
+    </div>
+    <button type="submit">Submit</button>
+
 </form>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
 function myFunction() {
@@ -103,13 +166,6 @@ function myFunction() {
   } else {
     x.className = "topnav";
   }
-}
-if($("#username").text()){
-$("#username").toggle();
-$("#logout").toggle();
-$("#login").toggle();
-$("#signup").toggle();
-$("#profile").toggle();
 }
 </script>
 </body>

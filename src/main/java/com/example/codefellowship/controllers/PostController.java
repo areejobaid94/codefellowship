@@ -30,10 +30,16 @@ public class PostController {
     }
 
 
-    @RequestMapping(value = "/delete_post", method = RequestMethod.GET)
-    public RedirectView handleDeletePost(@RequestParam(value = "id") Integer id) {
-        postRepository.deleteById(id);
-        return new RedirectView("/posts");
+    @RequestMapping(value = "/delete_post", method = RequestMethod.DELETE)
+    public RedirectView handleDeletePost(@RequestParam(value = "id") Integer id,Principal p) {
+        System.out.println(id);
+        ApplicationUser userDetails = (ApplicationUser) ((UsernamePasswordAuthenticationToken) p).getPrincipal();
+        Post post = postRepository.findById(id).get();
+        if(userDetails.getId() == post.getApplicationUser().getId() || post.getApplicationUser().isAdmin){
+            postRepository.deleteById(id);
+            return new RedirectView("/posts");
+        }
+        return new RedirectView("/error?message=You%are%not%allow%to%delete%the%user");
     }
 
     @PostMapping("/post")
@@ -47,16 +53,19 @@ public class PostController {
         return  new RedirectView("/myprofile");
     }
 
-    @PostMapping("/post-update")
+    @PutMapping("/post-update")
     public RedirectView updateStudent(@RequestParam(value = "body") String body ,
                                       @RequestParam(value="id") Integer id,String imageUrl,Principal p){
         System.out.println(body);
         System.out.println("id");
-        Post post = postRepository.findById(id).get();
         ApplicationUser userDetails = (ApplicationUser) ((UsernamePasswordAuthenticationToken) p).getPrincipal();
-        post.setBody(body);
-        post.setImageUrl(imageUrl);
-        postRepository.save(post);
-        return  new RedirectView("/myprofile");
+        Post post = postRepository.findById(id).get();
+        if(userDetails.getId() == post.getApplicationUser().getId()  || post.getApplicationUser().isAdmin){
+            post.setBody(body);
+            post.setImageUrl(imageUrl);
+            postRepository.save(post);
+            return  new RedirectView("/myprofile");
+        }
+        return new RedirectView("/error?message=You%are%not%allow%to%delete%the%user");
     }
 }

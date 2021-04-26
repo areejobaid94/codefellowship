@@ -26,11 +26,22 @@ public class ApplicationUser implements UserDetails {
     private String imgUrl;
     private String bio;
 
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public boolean isAdmin;
+
     public ApplicationUser(){
 
     }
 
-    public ApplicationUser(String password, String username, String firstName, String lastName, Date dateOfBirth, String imgUrl, String bio) {
+    public ApplicationUser(String password, String username, String firstName, String lastName, Date dateOfBirth, String imgUrl, String bio,boolean isAdmin) {
         this.password = password;
         this.username = username;
         this.firstName = firstName;
@@ -38,6 +49,7 @@ public class ApplicationUser implements UserDetails {
         this.dateOfBirth = dateOfBirth;
         this.imgUrl = imgUrl;
         this.bio = bio;
+        this.isAdmin = isAdmin;
     }
 
     public ApplicationUser(String userName, String password){

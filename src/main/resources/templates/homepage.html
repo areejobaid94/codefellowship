@@ -3,6 +3,10 @@
 <head>
     <link rel="stylesheet" href="./style.css">
     <meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -64,31 +68,44 @@
     text-align: left;
   }
 }
+body,h1 {font-family: "Raleway", sans-serif}
+body, html {height: 100%}
+.bgimg {
+  background-image: url('https://image.freepik.com/free-vector/green-geometrical-abstract-background_32550-96.jpg');
+  min-height: 100%;
+  background-position: center;
+  background-size: cover;
+}
 </style>
 <body>
 <div class="topnav" id="myTopnav">
     <a href="/" class="active">Home</a>
-    <a href="/myprofile" id="profile" style="display:none;">My Profile</a>
-    <a href="/signup" id ="signup">Sign Up</a>
-    <a href="/login" id = "login">Login</a>
-    <a href="/posts" id="posts" style="display:none;">All posts</a>
-    <a  href= "/myprofile"><span id = "username" th:text="${username}" style="display:none;"></span></a>
+    <a th:if="${username}" href="/myprofile" >My Profile</a>
+    <a href="/signup" th:if="!${username}" >Sign Up</a>
+    <a href="/login" th:if="!${username}">Login</a>
+    <a href="/posts"  th:if="${username}"> All posts</a>
+    <a href="/user_Data" >Search By Id</a>
+    <a  href= "/myprofile"><span th:if="${username}" th:text="${username}"></span></a>
+
     <a href="javascript:void(0);" class="icon" onclick="myFunction()">
         <i class="fa fa-bars"></i>
     </a>
-    <a href="/perform_logout" id = "logout" style="display:none;">Log Out</a>
+    <a href="/perform_logout" th:if="${username}" >Log Out</a>
 </div>
+<div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
+
+    <div class="w3-display-middle">
+        <h2 class="w3-jumbo w3-animate-top">Welcome Spring-Boot App</h2>
+        <hr class="w3-border-grey" style="margin:auto;width:40%">
+        <p class="w3-large w3-center">Auth App</p>
+    </div>
+    <div class="w3-display-bottomleft w3-padding-large">
+        Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a>
+    </div>
+</div>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script>
-if($("#username").text()){
-$("#username").toggle();
-$("#logout").toggle();
-$("#login").toggle();
-$("#signup").toggle();
-$("#profile").toggle();
-$("#posts").toggle();
-}
-</script>
+
 </body>
 
 </html>
