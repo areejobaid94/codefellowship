@@ -1,5 +1,6 @@
 package com.example.codefellowship.models;
 
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -7,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class ApplicationUser implements UserDetails {
@@ -15,20 +17,44 @@ public class ApplicationUser implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String password;
+    @Column(unique = true)
+    private String username;
+    private String firstName;
+    private String lastName;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date dateOfBirth;
+    private String imgUrl;
+    private String bio;
 
-    public void setPassword(String password) {
-        this.password = password;
+    public ApplicationUser(){
+
     }
 
-    public ApplicationUser(String password, String firstName, String lastName, Date dateOfBirth, String imgUrl, String bio, String username) {
+    public ApplicationUser(String password, String username, String firstName, String lastName, Date dateOfBirth, String imgUrl, String bio) {
         this.password = password;
+        this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
-
         this.dateOfBirth = dateOfBirth;
         this.imgUrl = imgUrl;
         this.bio = bio;
-        this.username = username;
+    }
+
+    public ApplicationUser(String userName, String password){
+        this.username = userName;
+        this.password = password;
+    }
+
+
+    @OneToMany(mappedBy = "applicationUser", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Post> posts;
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
     }
 
     public String getFirstName() {
@@ -71,23 +97,21 @@ public class ApplicationUser implements UserDetails {
         this.bio = bio;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    private String firstName;
-    private String lastName;
-
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date dateOfBirth;
-
-    private String imgUrl;
-
-    private String bio;
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Override
@@ -120,17 +144,8 @@ public class ApplicationUser implements UserDetails {
         return true;
     }
 
-    @Column(unique = true)
-    private String username;
-
-
-    public ApplicationUser(){
-
+    @Override
+    public String toString() {
+        return "this is user "+ this.username;
     }
-
-    public ApplicationUser(String userName,String password){
-        this.username = userName;
-        this.password = password;
-    }
-
 }

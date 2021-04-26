@@ -1,13 +1,10 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
-    <link rel="stylesheet" href="./style.css">
     <link rel="stylesheet" href="./stylePost.css">
+    <link rel="stylesheet" href="./style.css">
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Title</title>
 
 </head>
 <style>
@@ -74,70 +71,13 @@
     <a href="/signup" id ="signup">Sign Up</a>
     <a href="/login" id = "login">Login</a>
     <a href="/posts">All posts</a>
-    <a  href= "/myprofile"><span id = "username" th:text="${user.username}" style="display:none;"></span></a>
+    <a  href= "/myprofile"><span id = "username" th:text="${username}" style="display:none;"></span></a>
     <a href="javascript:void(0);" class="icon" onclick="myFunction()">
         <i class="fa fa-bars"></i>
     </a>
     <a href="/perform_logout" id = "logout" style="display:none;">Log Out</a>
 </div>
 
-<h2 class="headers">User Data</h2>
-<div class="row" >
-    <div class="column" >
-        <div class="card">
-            <form style="width= 100%" action="/user-update" id="update-user" hidden  method="post">
-                <h3>Update User</h3>
-                <label>
-                    Username:
-                    <input type="text" th:name="username" th:value="${user.username}">
-                </label>
-                <br>
-                <label>
-                    First Name:
-                    <input type="text" th:name="firstName" th:value="${user.firstName}">
-                </label>
-                <br>
-                <label>
-                    Image Url:
-                    <input type="text" th:name="imgUrl" th:value="${user.imgUrl}">
-                </label>
-                <label>
-                    Last Name:
-                    <input type="text" th:name="lastName" th:value="${user.lastName}">
-                </label>
-                <br>
-                <label>
-                    Date Of Birth
-                    <input type="date" th:name="dateOfBirth" th:value="${user.dateOfBirth}">
-                </label>
-                <label for="bio">bio</label>
-                <textarea id="bio" name="bio" rows="4" cols="50" >
-                </textarea>
-                <p>
-                    <input type="submit" value="Submit" class="button"/>
-                </p>
-            </form>
-
-            <div hidden id = "back-user">
-                <input type="submit" value="Back to data"  onclick="toggleUser()" class="button" />
-            </div>
-            <div id="card-user">
-
-                <img th:src="${user.imgUrl}"  style="width:100%" class="img"/>
-                <h4>Userame: </h4><p th:text="${user.username}"></p>
-                <h4>First Name: </h4><p th:text="${user.firstName}"></p>
-                <h4>Last Name: </h4><p th:text="${user.lastName}"></p>
-                <h4>Date Of Birth: </h4><p th:text="${user.dateOfBirth}"></p>
-                <form action="/delete_user"  method="get">
-                    <input th:value="${user.id}" type="text" th:name="id" hidden/>
-                    <input type="submit" value="Delete" class="button"/>
-                </form>
-                <input type="submit" value="Update User" onclick="toggleUser()" class="button"/>
-            </div>
-        </div>
-    </div>
-
-</div>
 <form action="/post" class="formB"  method="post">
     <h3>Add Post</h3>
     <label>
@@ -154,7 +94,7 @@
 </form>
 <h2 class="headers">All Posts</h2>
 <div class="row" >
-    <div class="column" th:each = "post : ${user.posts}" >
+    <div class="column" th:each = "post : ${posts}" >
         <div class="card">
             <form style="width= 100%" action="/post-update" id="update" hidden  method="post">
                 <h3>Update Post</h3>
@@ -199,12 +139,8 @@ $("#update").toggle();
 $("#card").toggle();
 $("#back").toggle();
 }
-function toggleUser(){
-console.log("hiiiiiiii")
-$("#update-user").toggle();
-$("#card-user").toggle();
-$("#back-user").toggle();
-}
+
+
 function myFunction() {
   var x = document.getElementById("myTopnav");
   if (x.className === "topnav") {
@@ -220,6 +156,7 @@ $("#login").toggle();
 $("#signup").toggle();
 $("#profile").toggle();
 }
+</script>
 </script>
 </body>
 </html>

@@ -71,46 +71,38 @@
     <a href="/myprofile" id="profile" style="display:none;">My Profile</a>
     <a href="/signup" id ="signup">Sign Up</a>
     <a href="/login" id = "login">Login</a>
-    <a href="/posts">All posts</a>
+    <a href="/posts" id="posts" style="display:none;">All posts</a>
     <a  href= "/myprofile"><span id = "username" th:text="${username}" style="display:none;"></span></a>
     <a href="javascript:void(0);" class="icon" onclick="myFunction()">
         <i class="fa fa-bars"></i>
     </a>
     <a href="/perform_logout" id = "logout" style="display:none;">Log Out</a>
 </div>
-
-<form action="perform_login" method='POST'>
-    <table>
-        <tr>
-            <td>User:</td>
-            <td><input type='text' name='username' value=''></td>
-        </tr>
-        <tr>
-            <td>Password:</td>
-            <td><input type='password' name='password' /></td>
-        </tr>
-        <tr>
-            <td><input name="submit" type="submit" value="submit" /></td>
-        </tr>
-    </table>
+<form action="/users/{id}" class="formB"  method="post">
+    <h3>Add Post</h3>
+    <label>
+        Post Body:
+        <input type="text" th:name="body" id = "body">
+    </label>
+    <br>
+    <label>
+        Image Url:
+        <input type="text" th:name="imageUrl" id = "imageUrl">
+    </label>
+    <br>
+    <input type="submit" value="Submit" class="button"/>
 </form>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
-function myFunction() {
-  var x = document.getElementById("myTopnav");
-  if (x.className === "topnav") {
-    x.className += " responsive";
-  } else {
-    x.className = "topnav";
-  }
-}
 if($("#username").text()){
 $("#username").toggle();
 $("#logout").toggle();
 $("#login").toggle();
 $("#signup").toggle();
 $("#profile").toggle();
+$("#posts").toggle();
 }
 </script>
 </body>
+
 </html>
