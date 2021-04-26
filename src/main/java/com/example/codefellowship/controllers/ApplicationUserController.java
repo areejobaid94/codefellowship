@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
@@ -44,10 +45,17 @@ public class ApplicationUserController {
         return new RedirectView("/login");
     }
 
-    @GetMapping("/myprofile")
+    @GetMapping("/profile")
     public String getUserProfilePage(Principal p, Model m){
         m.addAttribute("user", ((UsernamePasswordAuthenticationToken)p).getPrincipal());
-        return "profile.html";
+        return "profile";
     }
+
+    @GetMapping("/users/{id}")
+    public String getUserById(@PathVariable(value = "id") Integer id, Model m){
+        m.addAttribute("user", (applicationUserRepository.findById(id).get()));
+        return "profile";
+    }
+
 
 }
