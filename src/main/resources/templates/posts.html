@@ -138,6 +138,7 @@ display:flex;
                 <h4>Post Body: </h4><p th:text="${post.body}"></p>
                 <form th:if="${post.applicationUser.username} == ${username}" action="/delete_post?_method=delete"  method="post">
                     <input th:value="${post.id}" type="text" th:name="id" hidden/>
+                    
                     <input type="submit" value="Delete" class="button"/>
                 </form>
                 <input  th:if="${post.applicationUser.username} == ${username}" type="submit" value="Update Post" onclick="toggle()" class="button"/>
