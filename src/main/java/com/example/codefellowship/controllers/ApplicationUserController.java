@@ -56,7 +56,7 @@ public class ApplicationUserController {
     public RedirectView signup(@RequestParam(value="username") String username, @RequestParam(value="password") String password,
                                @RequestParam(value="firstName") String firstName, @RequestParam(value="lastName") String lastName,
                                @RequestParam("dateOfBirth") @DateTimeFormat(pattern="yyyy-MM-dd") Date dateOfBirth, @RequestParam(value="bio") String bio,
-                               @RequestParam(value="isAdmin") boolean isAdmin){
+                               @RequestParam(value="isAdmin", defaultValue = "false") boolean isAdmin){
 
         String defaultImgUrl = "https://t4.ftcdn.net/jpg/04/10/43/77/360_F_410437733_hdq4Q3QOH9uwh0mcqAhRFzOKfrCR24Ta.jpg";
         ApplicationUser newUser = new ApplicationUser(bCryptPasswordEncoder.encode(password), username,  firstName,  lastName,  dateOfBirth,  defaultImgUrl,  bio,isAdmin);
@@ -89,13 +89,17 @@ public class ApplicationUserController {
         return "SearchUser";
     }
 
+
     @RequestMapping(value = "/users", method = RequestMethod.POST)
     public String handleUserData(@RequestParam(value = "id") Integer id,Principal p, Model m) {
         if(((UsernamePasswordAuthenticationToken) p) != null){
             ApplicationUser userDetails =(ApplicationUser) ((UsernamePasswordAuthenticationToken) p).getPrincipal();
-            m.addAttribute("username", userDetails.getUsername());
+            if(userDetails.isAdmin || id == userDetails.getId()){
+                m.addAttribute("isAllow", true);
+            }else {
+                m.addAttribute("isAllow", false);
+            }
         }
-        System.out.println("helllo");
         ApplicationUser applicationUser =(ApplicationUser) applicationUserRepository.findById(id).get();
         if(applicationUser != null){
             m.addAttribute("user", applicationUser);
@@ -109,6 +113,8 @@ public class ApplicationUserController {
         ApplicationUser userDetails = (ApplicationUser) ((UsernamePasswordAuthenticationToken) p).getPrincipal();
         m.addAttribute("user", applicationUserRepository.findById (userDetails.getId()).get());
         m.addAttribute("username", applicationUserRepository.findById (userDetails.getId()).get().getUsername());
+        m.addAttribute("isAllow", true);
+
         return "profile";
     }
 
@@ -117,6 +123,11 @@ public class ApplicationUserController {
         if(((UsernamePasswordAuthenticationToken) p) != null){
             ApplicationUser userDetails =(ApplicationUser) ((UsernamePasswordAuthenticationToken) p).getPrincipal();
             m.addAttribute("username", userDetails.getUsername());
+            if(userDetails.isAdmin || id == userDetails.getId()){
+                m.addAttribute("isAllow", true);
+            }else {
+                m.addAttribute("isAllow", false);
+            }
         }
         System.out.println("helllo");
         ApplicationUser applicationUser =(ApplicationUser) applicationUserRepository.findById(id).get();
@@ -148,12 +159,19 @@ public class ApplicationUserController {
     }
 
     @RequestMapping(value = "/allUsers", method = RequestMethod.GET)
-    public String handleGetAllUsersData(Model m) {
+    public String handleGetAllUsersData(Model m, Principal p) {
+        if(((UsernamePasswordAuthenticationToken) p
+        ) != null){
+            ApplicationUser userDetails =(ApplicationUser) ((UsernamePasswordAuthenticationToken) p).getPrincipal();
+            m.addAttribute("username", userDetails.getUsername());
+        }
+
         m.addAttribute("users", applicationUserRepository.findAll());
         return "allUsers";
     }
     @RequestMapping(value = "/follow/{id}", method = RequestMethod.GET)
-    public String handleFollowUser(Model m, @PathVariable(value = "id") Integer id,Principal p) {
+    public RedirectView handleFollowUser(Model m, @PathVariable(value = "id") Integer id,Principal p) {
+
         if(((UsernamePasswordAuthenticationToken) p) != null){
             ApplicationUser userDetails =(ApplicationUser) ((UsernamePasswordAuthenticationToken) p).getPrincipal();
             ApplicationUser applicationUser = applicationUserRepository.findById(userDetails.getId()).get();
@@ -163,9 +181,10 @@ public class ApplicationUserController {
             UsersFollowers usersFollowers = new UsersFollowers(applicationUser,followedUser);
             usersFollowersRepository.save(usersFollowers);
             System.out.println(usersFollowersRepository.findAll());
+
         }
-        return "allUsers";
-    }
+        return new RedirectView("/myprofile");
+
 
     @RequestMapping(value = "/feed", method = RequestMethod.GET)
     public String handleFeed(Model m,Principal p) {
@@ -177,6 +196,8 @@ public class ApplicationUserController {
             for (UsersFollowers user:  allFollower){
                 allFollowerPosts.addAll(user.getApplicationUserFollower().getPosts());
             }
+            m.addAttribute("username",userDetails.getUsername());
+
             m.addAttribute("posts",allFollowerPosts);
         }
         return "posts";

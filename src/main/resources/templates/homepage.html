@@ -87,12 +87,12 @@ body, html {height: 100%}
     <a href="/user_Data" >Search By Id</a>
     <a href="/allUsers" >All Users</a>
 
-
     <a  href= "/myprofile"><span th:if="${username}" th:text="${username}"></span></a>
 
     <a href="javascript:void(0);" class="icon" onclick="myFunction()">
         <i class="fa fa-bars"></i>
     </a>
+    <a href="/feed" th:if="${username}" >Followers Posts</a>
     <a href="/perform_logout" th:if="${username}" >Log Out</a>
 </div>
 <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">

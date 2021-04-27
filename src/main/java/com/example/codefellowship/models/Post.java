@@ -9,21 +9,23 @@ import java.util.List;
 
 @Entity
 public class Post {
-    public Post(String body,ApplicationUser applicationUser, String imageUrl) {
+    public Post(String body,ApplicationUser applicationUser, String imageUrl,boolean isPublic) {
         this.body = body;
         this.applicationUser = applicationUser;
         this.imageUrl = imageUrl;
+        this.isPublic = isPublic;
     }
 
-//    public boolean isPublic() {
-//        return isPublic;
-//    }
+    public boolean isPublic() {
+        return isPublic;
+    }
 
-//    public void setPublic(boolean aPublic) {
-//        isPublic = aPublic;
-//    }
-//
-//    private boolean isPublic;
+    public void setPublic(boolean aPublic) {
+        isPublic = aPublic;
+    }
+
+    private boolean isPublic;
+
 
     public String getImageUrl() {
         return imageUrl;

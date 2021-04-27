@@ -4,12 +4,144 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Float four columns side by side */
+.column {
+  float: left;
+  width: 25%;
+  padding: 0 10px;
+}
+
+/* Remove extra left and right margins, due to padding */
+.row {margin: 0 -5px;}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Responsive columns */
+@media screen and (max-width: 600px) {
+  .column {
+    width: 100%;
+    display: block;
+    margin-bottom: 20px;
+  }
+}
+
+/* Style the counter cards */
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  padding: 16px;
+  text-align: center;
+  background-color: #f1f1f1;
+}
+    body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.topnav {
+  overflow: hidden;
+  background-color: #333;
+}
+
+.topnav a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.topnav a.active {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.topnav .icon {
+  display: none;
+}
+
+@media screen and (max-width: 600px) {
+  .topnav a:not(:first-child) {display: none;}
+  .topnav a.icon {
+    float: right;
+    display: block;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .topnav.responsive {position: relative;}
+  .topnav.responsive .icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .topnav.responsive a {
+    float: none;
+    display: block;
+    text-align: left;
+  }
+}
+body,h1 {font-family: "Raleway", sans-serif}
+body, html {height: 100%}
+.bgimg {
+  background-image: url('https://image.freepik.com/free-vector/green-geometrical-abstract-background_32550-96.jpg');
+  min-height: 100%;
+  background-position: center;
+  background-size: cover;
+}
+</style>
 <body>
-<div th:each="user : ${users}">
-    <form method="get" th:action="'/users/'+${user.id}">
-        <h3 th:text="${user.username}"></h3>
-        <input type="submit" value="View Profile">
-    </form>
+<div class="topnav" id="myTopnav">
+    <a href="/" class="active">Home</a>
+    <a th:if="${username}" href="/myprofile" >My Profile</a>
+    <a href="/signup" th:if="!${username}" >Sign Up</a>
+    <a href="/login" th:if="!${username}">Login</a>
+    <a href="/posts"  th:if="${username}"> All posts</a>
+    <a href="/user_Data" >Search By Id</a>
+    <a href="/allUsers" >All Users</a>
+    <a  href= "/myprofile"><span th:if="${username}" th:text="${username}"></span></a>
+    <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+        <i class="fa fa-bars"></i>
+    </a>
+    <a href="/feed" th:if="${username}" >Followers Posts</a>
+    <a href="/perform_logout" th:if="${username}" >Log Out</a>
 </div>
+<div STYLE="margin-top:30px;">
+    <div th:each="user : ${users}">
+        <form method="get" th:action="'/users/'+${user.id}">
+            <div class="column">
+                <div class="card">
+                    <img src="${user.imgUrl}" alt="not found">
+                    <h3 th:text="${user.username}"></h3>
+                    <p th:text="${user.bio}"></p>
+                    <input type="submit" value="View Profile">
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+
 </body>
 </html>
