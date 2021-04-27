@@ -252,9 +252,7 @@ display:flex;
     <a href="/signup" th:if="!${username}" >Sign Up</a>
     <a href="/login" th:if="!${username}">Login</a>
     <a href="/posts"  th:if="${username}"> All posts</a>
-    <a href="/user_Data" >Search By Id</a>
     <a  href= "/myprofile"><span th:if="${username}" th:text="${username}"></span></a>
-
     <a href="javascript:void(0);" class="icon" onclick="myFunction()">
         <i class="fa fa-bars"></i>
     </a>
@@ -305,6 +303,7 @@ display:flex;
                 <div class="card-user">
 
                     <img th:src="${user.imgUrl}"  style="width:100%" class="img"/>
+                    <a th:if="${username != user.username}" th:href="'/follow/' + ${user.id}"> Follow </a>
                     <h4>Userame: </h4><p th:text="${user.username}"></p>
                     <h4>First Name: </h4><p th:text="${user.firstName}"></p>
                     <h4>Last Name: </h4><p th:text="${user.lastName}"></p>
@@ -319,7 +318,7 @@ display:flex;
         </div>
 
     </div>
-    <form th:if="${isAllow}" action="/post" class="formB"   method="post">
+    <form th:if="${username}" action="/post" class="formB"   method="post">
         <h3>Add Post</h3>
         <label>
             Post Body:
@@ -364,17 +363,16 @@ display:flex;
 
                 <img th:src="${post.imageUrl}"  style="width:100%" class="img"/>
                 <h4>Post Body: </h4><p th:text="${post.body}"></p>
-                <form th:if="${isAllow}" action="/delete_post?_method=delete"  method="post">
+                <form th:if="${username}" action="/delete_post?_method=delete"  method="post">
                     <input th:value="${post.id}" type="text" th:name="id" hidden/>
                     <input type="submit" value="Delete" class="button"/>
                 </form>
-                <input th:if="${isAllow}" type="submit" value="Update Post" onclick="toggle()" class="button"/>
+                <input th:if="${username}" type="submit" value="Update Post" onclick="toggle()" class="button"/>
             </div>
         </div>
     </div>
 
 </div>
-
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>

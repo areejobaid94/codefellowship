@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:each="user : ${users}">
+    <form method="get" th:action="'/users/'+${user.id}">
+        <h3 th:text="${user.username}"></h3>
+        <input type="submit" value="View Profile">
+    </form>
+</div>
+</body>
+</html>

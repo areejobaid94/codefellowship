@@ -1,7 +1,10 @@
 package com.example.codefellowship.controllers;
 
 import com.example.codefellowship.models.ApplicationUser;
+import com.example.codefellowship.models.Post;
+import com.example.codefellowship.models.UsersFollowers;
 import com.example.codefellowship.repositories.ApplicationUserRepository;
+import com.example.codefellowship.repositories.UsersFollowersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,6 +21,7 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Set;
 
 @Controller
 public class ApplicationUserController {
@@ -26,6 +30,9 @@ public class ApplicationUserController {
     ApplicationUserRepository applicationUserRepository;
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    UsersFollowersRepository usersFollowersRepository;
 
     @GetMapping("/signup")
     public String getSignUpPage(Principal p, Model m){
@@ -91,30 +98,18 @@ public class ApplicationUserController {
         System.out.println("helllo");
         ApplicationUser applicationUser =(ApplicationUser) applicationUserRepository.findById(id).get();
         if(applicationUser != null){
-            if(((UsernamePasswordAuthenticationToken) p) != null){
-                ApplicationUser userDetails =(ApplicationUser) ((UsernamePasswordAuthenticationToken) p).getPrincipal();
-                if((id == userDetails.getId()) || userDetails.isAdmin){
-                    m.addAttribute("isAllow", true);
-                }else {
-                    m.addAttribute("isAllow", false);
-                }
-            }
             m.addAttribute("user", applicationUser);
             return "profile";
         }
-        return "/error?message=Id%is%not%used";
+        return "/error?message=You%are%not%allow%to%delete%the%user";
     }
 
     @GetMapping("/myprofile")
     public String getUserProfilePage(Principal p,Model m){
         ApplicationUser userDetails = (ApplicationUser) ((UsernamePasswordAuthenticationToken) p).getPrincipal();
-        if(userDetails != null){
-            m.addAttribute("user", applicationUserRepository.findById (userDetails.getId()).get());
-            m.addAttribute("username", applicationUserRepository.findById (userDetails.getId()).get().getUsername());
-            return "profile";
-        }
-        m.addAttribute("message", "You%are%not%allow%to%delete%the%user");
-        return "/error";
+        m.addAttribute("user", applicationUserRepository.findById (userDetails.getId()).get());
+        m.addAttribute("username", applicationUserRepository.findById (userDetails.getId()).get().getUsername());
+        return "profile";
     }
 
     @GetMapping("/users/{id}")
@@ -126,19 +121,10 @@ public class ApplicationUserController {
         System.out.println("helllo");
         ApplicationUser applicationUser =(ApplicationUser) applicationUserRepository.findById(id).get();
         if(applicationUser != null){
-            if(((UsernamePasswordAuthenticationToken) p) != null){
-                ApplicationUser userDetails =(ApplicationUser) ((UsernamePasswordAuthenticationToken) p).getPrincipal();
-                if((id == userDetails.getId()) || userDetails.isAdmin){
-                    m.addAttribute("isAllow", true);
-                }else {
-                    m.addAttribute("isAllow", false);
-                }
-            }
             m.addAttribute("user", applicationUser);
             return "profile";
         }
-        m.addAttribute("message", "Id%is%not%used");
-        return "/error";
+        return "/error?message=You%are%not%allow%to%delete%the%user";
     }
 
     @PutMapping("/user-update")
@@ -159,5 +145,40 @@ public class ApplicationUserController {
             return  new RedirectView("/myprofile");
         }
         return new RedirectView("/error?message=You%are%not%allow%to%delete%the%user");
+    }
+
+    @RequestMapping(value = "/allUsers", method = RequestMethod.GET)
+    public String handleGetAllUsersData(Model m) {
+        m.addAttribute("users", applicationUserRepository.findAll());
+        return "allUsers";
+    }
+    @RequestMapping(value = "/follow/{id}", method = RequestMethod.GET)
+    public String handleFollowUser(Model m, @PathVariable(value = "id") Integer id,Principal p) {
+        if(((UsernamePasswordAuthenticationToken) p) != null){
+            ApplicationUser userDetails =(ApplicationUser) ((UsernamePasswordAuthenticationToken) p).getPrincipal();
+            ApplicationUser applicationUser = applicationUserRepository.findById(userDetails.getId()).get();
+            ApplicationUser followedUser = applicationUserRepository.findById(id).get();
+            System.out.println(applicationUser);
+            System.out.println(followedUser);
+            UsersFollowers usersFollowers = new UsersFollowers(applicationUser,followedUser);
+            usersFollowersRepository.save(usersFollowers);
+            System.out.println(usersFollowersRepository.findAll());
+        }
+        return "allUsers";
+    }
+
+    @RequestMapping(value = "/feed", method = RequestMethod.GET)
+    public String handleFeed(Model m,Principal p) {
+        if(((UsernamePasswordAuthenticationToken) p) != null){
+            ApplicationUser userDetails =(ApplicationUser) ((UsernamePasswordAuthenticationToken) p).getPrincipal();
+            ApplicationUser applicationUser = applicationUserRepository.findById(userDetails.getId()).get();
+            ArrayList<Post> allFollowerPosts = new ArrayList();
+            Set<UsersFollowers> allFollower  =  applicationUser.getUsers();
+            for (UsersFollowers user:  allFollower){
+                allFollowerPosts.addAll(user.getApplicationUserFollower().getPosts());
+            }
+            m.addAttribute("posts",allFollowerPosts);
+        }
+        return "posts";
     }
 }

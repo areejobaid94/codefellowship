@@ -83,9 +83,7 @@ display:flex;
     <a href="/signup" th:if="!${username}" >Sign Up</a>
     <a href="/login" th:if="!${username}">Login</a>
     <a href="/posts"  th:if="${username}"> All posts</a>
-    <a href="/user_Data" >Search By Id</a>
     <a  href= "/myprofile"><span th:if="${username}" th:text="${username}"></span></a>
-
     <a href="javascript:void(0);" class="icon" onclick="myFunction()">
         <i class="fa fa-bars"></i>
     </a>
@@ -140,6 +138,7 @@ display:flex;
                     <input th:value="${post.id}" type="text" th:name="id" hidden/>
                     <input type="submit" value="Delete" class="button"/>
                 </form>
+                <a th:href ="'/users/'+${post.applicationUser.id}"></a>
                 <input  th:if="${post.applicationUser.username} == ${username}" type="submit" value="Update Post" onclick="toggle()" class="button"/>
             </div>
         </div>

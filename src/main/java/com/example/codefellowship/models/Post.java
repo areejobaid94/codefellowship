@@ -15,6 +15,16 @@ public class Post {
         this.imageUrl = imageUrl;
     }
 
+//    public boolean isPublic() {
+//        return isPublic;
+//    }
+
+//    public void setPublic(boolean aPublic) {
+//        isPublic = aPublic;
+//    }
+//
+//    private boolean isPublic;
+
     public String getImageUrl() {
         return imageUrl;
     }
