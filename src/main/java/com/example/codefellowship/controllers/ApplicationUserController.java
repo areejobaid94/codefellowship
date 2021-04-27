@@ -113,7 +113,8 @@ public class ApplicationUserController {
             m.addAttribute("username", applicationUserRepository.findById (userDetails.getId()).get().getUsername());
             return "profile";
         }
-        return "/error?message=You%are%not%allow%to%delete%the%user";
+        m.addAttribute("message", "You%are%not%allow%to%delete%the%user");
+        return "/error";
     }
 
     @GetMapping("/users/{id}")
@@ -136,7 +137,8 @@ public class ApplicationUserController {
             m.addAttribute("user", applicationUser);
             return "profile";
         }
-        return "/error?message=Id%is%not%used";
+        m.addAttribute("message", "Id%is%not%used");
+        return "/error";
     }
 
     @PutMapping("/user-update")
