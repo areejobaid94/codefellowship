@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./stylePost.css">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+</head>
+<style>
+* {box-sizing: border-box;}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align:center;
+}
+
+.header {
+  overflow: hidden;
+  background-color: #90EE90;
+  padding: 20px 25px;
+}
+
+.header a {
+  float: left;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  text-decoration: none;
+  font-size: 18px;
+  line-height: 25px;
+  border-radius: 4px;
+}
+#all-form{
+padding-left:20px;
+display:flex;
+margin:auto;
+}
+form{
+margin:auto;
+text-align:center;
+}
+.formC{
+    width: 30%;
+    margin: auto;
+    padding-top: 35px;
+    padding-bottom: 110px;
+    box-shadow: 4px 2px 3px 4px grey;
+}
+
+.formB{
+    width: 30%;
+    margin: auto;
+    padding-top: 35px;
+    padding-bottom: 110px;
+    box-shadow: 4px 2px 3px 4px grey;
+    margin-top: 100px;
+}
+
+
+
+input {
+    background-color: transparent;
+    color: black;
+    outline: none;
+    outline-style: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: solid #eeeeee 1px;
+    padding: 0px 10px;
+}
+.form{
+    width: 30%;
+    margin: auto;
+    padding: 40px;
+    box-shadow: 4px 2px 3px 4px grey;
+    margin-top: 100px;
+}
+
+label{
+float:left;
+padding-left: 31px;
+margin-bottom: 30px;
+}
+
+
+.header a.logo {
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.header a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.header a.active {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.header-right {
+  float: right;
+}
+
+h3,h2{
+color:limegreen;
+}
+
+button{
+background-color:lightgreen;
+}
+
+.button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 10px 30px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 500px) {
+  .header a {
+    float: none;
+    display: block;
+    text-align: left;
+  }
+
+  .header-right {
+    float: none;
+  }
+}
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Float four columns side by side */
+.column {
+  float: left;
+  margin-left: 4%;
+  padding: 20px 20px;
+  box-shadow: 4px 3px 4px 3px #888888;
+}
+.img{
+    width:40%;
+    height:250px;
+}
+/* Remove extra left and right margins, due to padding */
+.row {margin: 50px 5px}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.row{
+margin:auto;
+}
+.headers{
+margin-top:70px;
+margin-bottom:20px;
+}
+
+    body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.column_post {
+  float: left;
+  margin-left: 4%;
+  padding: 20px 20px;
+  box-shadow: 4px 3px 4px 3px #888888;
+}
+.topnav {
+  overflow: hidden;
+  background-color: #333;
+}
+
+.topnav a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.topnav a.active {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.topnav .icon {
+  display: none;
+}
+
+@media screen and (max-width: 600px) {
+  .topnav a:not(:first-child) {display: none;}
+  .topnav a.icon {
+    float: right;
+    display: block;
+  }
+}
+.row, .formB{
+display: inline-block;
+}
+
+#contanar{
+display:flex;
+}
+
+@media screen and (max-width: 600px) {
+  .topnav.responsive {position: relative;}
+  .topnav.responsive .icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .topnav.responsive a {
+    float: none;
+    display: block;
+    text-align: left;
+  }
+}
+</style>
+<body>
+
+<div class="topnav" id="myTopnav">
+    <a href="/" class="active">Home</a>
+    <a th:if="${username}" href="/myprofile" >My Profile</a>
+    <a href="/signup" th:if="!${username}" >Sign Up</a>
+    <a href="/login" th:if="!${username}">Login</a>
+    <a href="/posts"  th:if="${username}"> All posts</a>
+    <a  href= "/myprofile"><span th:if="${username}" th:text="${username}"></span></a>
+    <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+        <i class="fa fa-bars"></i>
+    </a>
+    <a href="/perform_logout" th:if="${username}" >Log Out</a>
+</div>
+<h2 class="headers">User Data</h2>
+<div id="contanar">
+    <div class="row" >
+        <div class="column" >
+            <div class="card">
+                <form style="width= 100%" action="/user-update?_method=put" class="update-user" hidden  method="post">
+                    <h3>Update User</h3>
+                    <label>
+                        Username:
+                        <input type="text" th:name="username" th:value="${user.username}" required>
+                    </label>
+                    <br>
+                    <label>
+                        First Name:
+                        <input type="text" th:name="firstName" th:value="${user.firstName}" required>
+                    </label>
+                    <input type="text" th:name="id" hidden th:value="${user.id}" required>
+                    <br>
+                    <label>
+                        Image Url:
+                        <input type="text" th:name="imgUrl" th:value="${user.imgUrl}" required>
+                    </label>
+                    <label>
+                        Last Name:
+                        <input type="text" th:name="lastName" th:value="${user.lastName}" required>
+                    </label>
+                    <br>
+                    <label>
+                        Date Of Birth
+                        <input type="date" th:name="dateOfBirth" th:value="${user.dateOfBirth}" required>
+                    </label>
+                    <label for="bio">bio</label>
+                    <textarea id="bio" name="bio" rows="4" cols="50" required>
+                </textarea>
+                    <p>
+                        <input type="submit" value="Submit" class="button"/>
+                    </p>
+                </form>
+
+                <div hidden class="back-user">
+                    <input type="submit" value="Back to data"  onclick="toggleUser()" class="button" />
+                </div>
+                <div class="card-user">
+
+                    <img th:src="${user.imgUrl}"  style="width:100%" class="img"/>
+                    <a th:if="${username != user.username}" th:href="'/follow/' + ${user.id}"> Follow </a>
+                    <h4>Userame: </h4><p th:text="${user.username}"></p>
+                    <h4>First Name: </h4><p th:text="${user.firstName}"></p>
+                    <h4>Last Name: </h4><p th:text="${user.lastName}"></p>
+                    <h4>Date Of Birth: </h4><p th:text="${user.dateOfBirth}"></p>
+                    <form action="/delete_user?_method=delete"  method="post">
+                        <input th:value="${user.id}" type="text" th:name="id" hidden/>
+                        <input type="submit" value="Delete" class="button"/>
+                    </form>
+                    <input type="submit" value="Update User" onclick="toggleUser()" class="button"/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <form th:if="${username}" action="/post" class="formB"   method="post">
+        <h3>Add Post</h3>
+        <label>
+            Post Body:
+            <input type="text" th:name="body" id = "body">
+        </label>
+        <br>
+        <label>
+            Image Url:
+            <input type="text" th:name="imageUrl" id = "imageUrl">
+        </label>
+        <br>
+        <input type="submit" value="Submit" class="button"/>
+    </form>
+</div>
+
+<h2 class="headers" >All Posts</h2>
+<div class="row" >
+    <div class="column_post" th:each = "post : ${user.posts}" >
+        <div class="card">
+            <form style="width= 100%" action="/post-update?_method=put" class="update_del" hidden  method="post">
+                <h3>Update Post</h3>
+                <label>
+                    Post Body:
+                    <input type="text" th:name="body" th:value="${post.body}" required>
+                </label>
+                <br>
+                <label>
+                    Image Url:
+                    <input type="text" th:name="imageUrl" th:value="${post.imageUrl}" required>
+                </label>
+                <br>
+                <input th:value="${post.id}" type="text" th:name="id" hidden/>
+                <p>
+                    <input type="submit" value="Submit" class="button"/>
+                </p>
+            </form>
+
+            <div hidden class="back_del">
+                <input type="submit" value="Back to data"  onclick="toggle()" class="button" />
+            </div>
+            <div class="card_del">
+
+                <img th:src="${post.imageUrl}"  style="width:100%" class="img"/>
+                <h4>Post Body: </h4><p th:text="${post.body}"></p>
+                <form th:if="${username}" action="/delete_post?_method=delete"  method="post">
+                    <input th:value="${post.id}" type="text" th:name="id" hidden/>
+                    <input type="submit" value="Delete" class="button"/>
+                </form>
+                <input th:if="${username}" type="submit" value="Update Post" onclick="toggle()" class="button"/>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+function toggle(){
+$(".update_del").toggle();
+$(".card_del").toggle();
+$(".back_del").toggle();
+}
+function toggleUser(){
+console.log("hiiiiiiii")
+$(".update-user").toggle();
+$(".card-user").toggle();
+$(".back-user").toggle();
+}
+function myFunction() {
+  var x = document.getElementById("myTopnav");
+  if (x.className === "topnav") {
+    x.className += " responsive";
+  } else {
+    x.className = "topnav";
+  }
+}
+</script>
+</body>
+</html>

@@ -26,6 +26,7 @@ public class Post {
 
     private boolean isPublic;
 
+
     public String getImageUrl() {
         return imageUrl;
     }

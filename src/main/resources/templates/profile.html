@@ -254,6 +254,7 @@ display:flex;
     <a href="/posts"  th:if="${username}"> All posts</a>
     <a href="/user_Data" >Search By Id</a>
     <a href="/allUsers" >All Users</a>
+
     <a  href= "/myprofile"><span th:if="${username}" th:text="${username}"></span></a>
     <a href="javascript:void(0);" class="icon" onclick="myFunction()">
         <i class="fa fa-bars"></i>
@@ -322,6 +323,7 @@ display:flex;
 
     </div>
     <form th:if="${username == user.username}" action="/post" class="formB"   method="post">
+
         <h3>Add Post</h3>
         <label>
             Post Body:
@@ -374,11 +376,12 @@ display:flex;
 
                 <img th:src="${post.imageUrl}"  style="width:100%" class="img"/>
                 <h4>Post Body: </h4><p th:text="${post.body}"></p>
-                <form th:if="${isAllow}" action="/delete_post?_method=delete"  method="post">
+                <form th:if="${username}" action="/delete_post?_method=delete"  method="post">
                     <input th:value="${post.id}" type="text" th:name="id" hidden/>
                     <input type="submit" value="Delete" class="button"/>
                 </form>
                 <input  th:if="${isAllow}"  type="submit" value="Update Post" onclick="toggle()" class="button"/>
+
             </div>
         </div>
     </div>

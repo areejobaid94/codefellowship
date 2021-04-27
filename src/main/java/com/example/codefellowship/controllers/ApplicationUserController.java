@@ -114,6 +114,7 @@ public class ApplicationUserController {
         m.addAttribute("user", applicationUserRepository.findById (userDetails.getId()).get());
         m.addAttribute("username", applicationUserRepository.findById (userDetails.getId()).get().getUsername());
         m.addAttribute("isAllow", true);
+
         return "profile";
     }
 
@@ -164,11 +165,13 @@ public class ApplicationUserController {
             ApplicationUser userDetails =(ApplicationUser) ((UsernamePasswordAuthenticationToken) p).getPrincipal();
             m.addAttribute("username", userDetails.getUsername());
         }
+
         m.addAttribute("users", applicationUserRepository.findAll());
         return "allUsers";
     }
     @RequestMapping(value = "/follow/{id}", method = RequestMethod.GET)
     public RedirectView handleFollowUser(Model m, @PathVariable(value = "id") Integer id,Principal p) {
+
         if(((UsernamePasswordAuthenticationToken) p) != null){
             ApplicationUser userDetails =(ApplicationUser) ((UsernamePasswordAuthenticationToken) p).getPrincipal();
             ApplicationUser applicationUser = applicationUserRepository.findById(userDetails.getId()).get();
@@ -181,7 +184,7 @@ public class ApplicationUserController {
 
         }
         return new RedirectView("/myprofile");
-    }
+
 
     @RequestMapping(value = "/feed", method = RequestMethod.GET)
     public String handleFeed(Model m,Principal p) {
@@ -194,6 +197,7 @@ public class ApplicationUserController {
                 allFollowerPosts.addAll(user.getApplicationUserFollower().getPosts());
             }
             m.addAttribute("username",userDetails.getUsername());
+
             m.addAttribute("posts",allFollowerPosts);
         }
         return "posts";
