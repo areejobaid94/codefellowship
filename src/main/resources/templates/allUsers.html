@@ -1,18 +1,51 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="./style.css">
     <meta charset="UTF-8">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Title</title>
 </head>
 <style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Float four columns side by side */
+.column {
+  float: left;
+  width: 25%;
+  padding: 0 10px;
+}
+
+/* Remove extra left and right margins, due to padding */
+.row {margin: 0 -5px;}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Responsive columns */
+@media screen and (max-width: 600px) {
+  .column {
+    width: 100%;
+    display: block;
+    margin-bottom: 20px;
+  }
+}
+
+/* Style the counter cards */
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  padding: 16px;
+  text-align: center;
+  background-color: #f1f1f1;
+}
     body {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
@@ -86,29 +119,28 @@ body, html {height: 100%}
     <a href="/posts"  th:if="${username}"> All posts</a>
     <a href="/user_Data" >Search By Id</a>
     <a href="/allUsers" >All Users</a>
-
     <a  href= "/myprofile"><span th:if="${username}" th:text="${username}"></span></a>
-
     <a href="javascript:void(0);" class="icon" onclick="myFunction()">
         <i class="fa fa-bars"></i>
     </a>
     <a href="/feed" th:if="${username}" >Followers Posts</a>
     <a href="/perform_logout" th:if="${username}" >Log Out</a>
 </div>
-<div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
+<div STYLE="margin-top:30px;">
+    <div th:each="user : ${users}">
+        <form method="get" th:action="'/users/'+${user.id}">
+            <div class="column">
+                <div class="card">
+                    <img src="${user.imgUrl}" alt="not found">
+                    <h3 th:text="${user.username}"></h3>
+                    <p th:text="${user.bio}"></p>
+                    <input type="submit" value="View Profile">
+                </div>
+            </div>
 
-    <div class="w3-display-middle">
-        <h2 class="w3-jumbo w3-animate-top">Welcome Spring-Boot App</h2>
-        <hr class="w3-border-grey" style="margin:auto;width:40%">
-        <p class="w3-large w3-center">Auth App</p>
-    </div>
-    <div class="w3-display-bottomleft w3-padding-large">
-        Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a>
+        </form>
     </div>
 </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
 </body>
-
 </html>

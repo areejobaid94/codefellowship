@@ -43,11 +43,11 @@ public class PostController {
     }
 
     @PostMapping("/post")
-    public RedirectView addStudent(@RequestParam(value = "body") String body, Principal p, String imageUrl){
+    public RedirectView addStudent(@RequestParam(value = "body") String body, Principal p, String imageUrl,@RequestParam(value="isPublic",defaultValue = "false") boolean isPublic){
         ApplicationUser userDetails = (ApplicationUser) ((UsernamePasswordAuthenticationToken) p).getPrincipal();
         System.out.println(userDetails);
         System.out.println("userDetails");
-        Post post = new Post(body,userDetails, imageUrl);
+        Post post = new Post(body,userDetails, imageUrl,isPublic);
         postRepository.save(post);
         System.out.println(post);
         return  new RedirectView("/myprofile");
@@ -55,13 +55,14 @@ public class PostController {
 
     @PutMapping("/post-update")
     public RedirectView updateStudent(@RequestParam(value = "body") String body ,
-                                      @RequestParam(value="id") Integer id,String imageUrl,Principal p){
+                                      @RequestParam(value="id") Integer id,String imageUrl,Principal p,@RequestParam(value="isPublic",defaultValue = "false") boolean isPublic){
         System.out.println(body);
         System.out.println("id");
         ApplicationUser userDetails = (ApplicationUser) ((UsernamePasswordAuthenticationToken) p).getPrincipal();
         Post post = postRepository.findById(id).get();
         if(userDetails.getId() == post.getApplicationUser().getId()  || post.getApplicationUser().isAdmin){
             post.setBody(body);
+            post.setPublic(isPublic);
             post.setImageUrl(imageUrl);
             postRepository.save(post);
             return  new RedirectView("/myprofile");

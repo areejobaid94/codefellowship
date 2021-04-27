@@ -135,11 +135,14 @@ span.psw {
     <a href="/login" th:if="!${username}">Login</a>
     <a href="/posts"  th:if="${username}"> All posts</a>
     <a href="/user_Data" >Search By Id</a>
+    <a href="/allUsers" >All Users</a>
+
     <a  href= "/myprofile"><span th:if="${username}" th:text="${username}"></span></a>
 
     <a href="javascript:void(0);" class="icon" onclick="myFunction()">
         <i class="fa fa-bars"></i>
     </a>
+    <a href="/feed" th:if="${username}" >Followers Posts</a>
     <a href="/perform_logout" th:if="${username}" >Log Out</a>
 </div>
 <form method="POST" action="/signup">

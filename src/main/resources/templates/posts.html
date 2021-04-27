@@ -84,11 +84,12 @@ display:flex;
     <a href="/login" th:if="!${username}">Login</a>
     <a href="/posts"  th:if="${username}"> All posts</a>
     <a href="/user_Data" >Search By Id</a>
+    <a href="/allUsers" >All Users</a>
     <a  href= "/myprofile"><span th:if="${username}" th:text="${username}"></span></a>
-
     <a href="javascript:void(0);" class="icon" onclick="myFunction()">
         <i class="fa fa-bars"></i>
     </a>
+    <a href="/feed" th:if="${username}" >Followers Posts</a>
     <a href="/perform_logout" th:if="${username}" >Log Out</a>
 </div>
 <form action="/post" class="formB"  method="post">
@@ -102,6 +103,10 @@ display:flex;
         Image Url:
         <input type="text" th:name="imageUrl" id = "imageUrl">
     </label>
+    <label>
+        Is Public
+        <input type="checkbox" checked="checked" name="isPublic">
+    </label>
     <br>
     <input type="submit" value="Submit" class="button"/>
 </form>
@@ -110,9 +115,9 @@ display:flex;
 <h2 class="headers">All Posts</h2>
 <div class="row" >
     <div class="column_post" th:each = "post : ${posts}" >
-        <div class="card">
-            <form  th:if="${post.applicationUser.username} == ${username}" style="width= 100%" action="/post-update?_method=put" class="update_del" hidden  method="post">
-                <h3  th:if="${post.applicationUser.username} == ${username}">Update Post</h3>
+        <div th:if="${post.isPublic || post.applicationUser.username == username}" class="card">
+            <form  style="width= 100%" action="/post-update?_method=put" class="update_del" hidden  method="post">
+                <h3 >Update Post</h3>
                 <label>
                     Post Body:
                     <input type="text" th:name="body" th:value="${post.body}" required>
@@ -121,6 +126,10 @@ display:flex;
                 <label>
                     Image Url:
                     <input type="text" th:name="imageUrl" th:value="${post.imageUrl}" required>
+                </label>
+                <label>
+                    Is Public
+                    <input type="checkbox" checked="checked" name="isPublic">
                 </label>
                 <br>
                 <input th:value="${post.id}" type="text" th:name="id" hidden/>
@@ -138,9 +147,9 @@ display:flex;
                 <h4>Post Body: </h4><p th:text="${post.body}"></p>
                 <form th:if="${post.applicationUser.username} == ${username}" action="/delete_post?_method=delete"  method="post">
                     <input th:value="${post.id}" type="text" th:name="id" hidden/>
-                    
                     <input type="submit" value="Delete" class="button"/>
                 </form>
+                <a th:href ="'/users/'+${post.applicationUser.id}" th:text="${post.applicationUser.username}"></a>
                 <input  th:if="${post.applicationUser.username} == ${username}" type="submit" value="Update Post" onclick="toggle()" class="button"/>
             </div>
         </div>

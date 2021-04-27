@@ -6,9 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 public class ApplicationUser implements UserDetails {
@@ -41,7 +39,13 @@ public class ApplicationUser implements UserDetails {
 
     }
 
-    public ApplicationUser(String password, String username, String firstName, String lastName, Date dateOfBirth, String imgUrl, String bio,boolean isAdmin) {
+    @OneToMany(mappedBy = "applicationUser")
+    Set<UsersFollowers> users;
+
+    @OneToMany(mappedBy = "applicationUserFollower")
+    Set<UsersFollowers> followers;
+
+    public ApplicationUser(String password, String username, String firstName, String lastName, Date dateOfBirth, String imgUrl, String bio, boolean isAdmin) {
         this.password = password;
         this.username = username;
         this.firstName = firstName;
@@ -50,6 +54,14 @@ public class ApplicationUser implements UserDetails {
         this.imgUrl = imgUrl;
         this.bio = bio;
         this.isAdmin = isAdmin;
+    }
+
+    public Set<UsersFollowers> getUsers() {
+        return users;
+    }
+
+    public Set<UsersFollowers> getFollowers() {
+        return followers;
     }
 
     public ApplicationUser(String userName, String password){
@@ -160,4 +172,6 @@ public class ApplicationUser implements UserDetails {
     public String toString() {
         return "this is user "+ this.username;
     }
+
+
 }
