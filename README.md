@@ -1,4 +1,4 @@
-### Lab: 16 && 17 - Spring Auth
+### Lab: 16 && 17 && 18 && 19 - Spring Auth
 
 ### Overview Of The Architecture
 
